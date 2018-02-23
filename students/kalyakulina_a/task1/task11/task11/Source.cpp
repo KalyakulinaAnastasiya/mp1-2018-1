@@ -1,7 +1,6 @@
-
 #include <iostream>
 using namespace std;
-
+//#include<process.h>
 
 class Long_number {
 private:
