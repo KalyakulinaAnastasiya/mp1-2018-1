@@ -12,17 +12,17 @@ private:
 public:
 	Long_number() {a_right=a_left=0;a_sign=0;}
 
-	Long_number(int i) {
+	Long_number(__int64 i) {
+
 		if (i<0) {
 			a_sign=1;
-			a_right=-i;
-			a_left=0;
-		}
+			i=-i;
+			}
 		else {
-			a_right=i; 
-			a_left=0;
 			a_sign=0;
 		}
+		a_right = i;				// Мл. часть
+		a_left = (i) / pow(2,32);	// Ст. часть
 	}
 
 	Long_number(unsigned int right, unsigned int left, unsigned int sign) {a_right=right; a_left=left; a_sign=sign;}
@@ -41,8 +41,8 @@ public:
 	// Перегрузка оператора +
 	friend const Long_number operator +(Long_number& a1,Long_number &b1)
 	{
-		unsigned int t_l, t_r, t_s;		// 32 бит
-		long t_res, t_a1, t_b1;			// 64 бит
+		unsigned int t_l, t_r, t_s;		    // 32 бит
+		__int64 t_res, t_a1, t_b1;			// 64 бит
 		// Приводим данные к типу long (64 бит)
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
@@ -68,7 +68,7 @@ public:
 	friend const Long_number operator -(Long_number& a1,Long_number &b1)
 	{
 		unsigned int t_l, t_r, t_s;		// 32 бит
-		long t_res, t_a1, t_b1;			// 64 бит
+		__int64 t_res, t_a1, t_b1;			// 64 бит
 
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
@@ -91,7 +91,7 @@ public:
 	friend const Long_number operator /(Long_number& a1,Long_number &b1)
 	{
 		unsigned int t_l, t_r, t_s;		// 32 бит
-		long t_res, t_a1, t_b1;			// 64 бит
+		__int64 t_res, t_a1, t_b1;			// 64 бит
 
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
@@ -141,7 +141,7 @@ public:
 	friend const Long_number operator %(Long_number& a1,Long_number &b1)
 	{
 		unsigned int t_l, t_r, t_s;		// 32 бит
-		long t_res, t_a1, t_b1;			// 64 бит
+		__int64 t_res, t_a1, t_b1;			// 64 бит
 
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
@@ -180,8 +180,8 @@ public:
 int main()
 {
 	//setlocale(LC_ALL, "Russian");
-	Long_number* _a = new Long_number(100000);
-	Long_number* _b = new Long_number(200000);
+	Long_number* _a = new Long_number(2000000000);
+	Long_number* _b = new Long_number(3000000000);
 	Long_number* _c = new Long_number();
 	*_c = *_a + *_b;
 	_c->putLong_number();
