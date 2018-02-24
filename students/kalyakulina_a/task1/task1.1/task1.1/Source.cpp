@@ -34,8 +34,8 @@ public:
 		if (a_sign != 0) {
 			c = "-";
 		}
-
-		cout<<c<<a_left<<a_right<<"\n";
+		unsigned __int64 t = a_left * pow(2,32) + a_right; 
+		cout<<c<<t<<"\n";
 	}
 
 	// Перегрузка оператора +
@@ -122,24 +122,18 @@ public:
 
 	friend const Long_number operator *(Long_number& a1,Long_number &b1)
 	{
-		unsigned int t_l, t_r, t_s;		// 32 бит
-		long t_res, t_a1, t_b1;			// 64 бит
+		unsigned int t_l, t_r, t_s;			// 32 бит
+		unsigned __int64 t_res, t_a1, t_b1;	// 64 бит
 
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
-		if (a1.a_sign != 0) {t_a1 = -t_a1;}
-		if (b1.a_sign != 0) {t_b1 = -t_b1;}
-
+		if (a1.a_sign != b1.a_sign) {t_s = 1;}
+		else {t_s = 0;}
+		
 		t_res=t_a1*t_b1;
-
-		t_s = 0;
-		if (t_res < 0) {
-			t_s = 1;
-			t_res=-t_res;
-		}
-
-		t_r = t_res;
+				
 		t_l = t_res / pow(2,32);
+		t_r = t_res;
 
 		return (Long_number(t_r, t_l, t_s));
 	}
@@ -186,8 +180,8 @@ public:
 int main()
 {
 	//setlocale(LC_ALL, "Russian");
-	Long_number* _a = new Long_number(10000);
-	Long_number* _b = new Long_number(20000);
+	Long_number* _a = new Long_number(100000);
+	Long_number* _b = new Long_number(200000);
 	Long_number* _c = new Long_number();
 	*_c = *_a + *_b;
 	_c->putLong_number();
