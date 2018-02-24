@@ -12,7 +12,7 @@ private:
 public:
 	Long_number() {a_right=a_left=0;a_sign=0;}
 
-	Long_number(__int64 i) {
+	Long_number(int i) {
 
 		if (i<0) {
 			a_sign=1;
@@ -24,6 +24,7 @@ public:
 		a_right = i;				// Мл. часть
 		a_left = (i) / pow(2,32);	// Ст. часть
 	}
+
 
 	Long_number(unsigned int right, unsigned int left, unsigned int sign) {a_right=right; a_left=left; a_sign=sign;}
 
@@ -181,7 +182,7 @@ int main()
 {
 	//setlocale(LC_ALL, "Russian");
 	Long_number* _a = new Long_number(2000000000);
-	Long_number* _b = new Long_number(3000000000);
+	Long_number* _b = new Long_number(1500000000);
 	Long_number* _c = new Long_number();
 	*_c = *_a + *_b;
 	_c->putLong_number();
