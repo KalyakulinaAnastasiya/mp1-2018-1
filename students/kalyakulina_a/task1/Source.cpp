@@ -13,18 +13,17 @@ public:
 	Long_number() {a_right=a_left=0;a_sign=0;}
 
 	Long_number(int i) {
-
 		if (i<0) {
 			a_sign=1;
-			i=-i;
-			}
+			a_right=-i;
+			a_left=0;
+		}
 		else {
+			a_right=i; 
+			a_left=0;
 			a_sign=0;
 		}
-		a_right = i;				// Мл. часть
-		a_left = (i) / pow(2,32);	// Ст. часть
 	}
-
 
 	Long_number(unsigned int right, unsigned int left, unsigned int sign) {a_right=right; a_left=left; a_sign=sign;}
 
@@ -35,15 +34,15 @@ public:
 		if (a_sign != 0) {
 			c = "-";
 		}
-		unsigned __int64 t = a_left * pow(2,32) + a_right; 
-		cout<<c<<t<<"\n";
+
+		cout<<c<<a_left<<a_right<<"\n";
 	}
 
 	// Перегрузка оператора +
 	friend const Long_number operator +(Long_number& a1,Long_number &b1)
 	{
-		unsigned int t_l, t_r, t_s;		    // 32 бит
-		__int64 t_res, t_a1, t_b1;			// 64 бит
+		unsigned int t_l, t_r, t_s;		// 32 бит
+		long t_res, t_a1, t_b1;			// 64 бит
 		// Приводим данные к типу long (64 бит)
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
@@ -69,7 +68,7 @@ public:
 	friend const Long_number operator -(Long_number& a1,Long_number &b1)
 	{
 		unsigned int t_l, t_r, t_s;		// 32 бит
-		__int64 t_res, t_a1, t_b1;			// 64 бит
+		long t_res, t_a1, t_b1;			// 64 бит
 
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
@@ -92,7 +91,7 @@ public:
 	friend const Long_number operator /(Long_number& a1,Long_number &b1)
 	{
 		unsigned int t_l, t_r, t_s;		// 32 бит
-		__int64 t_res, t_a1, t_b1;			// 64 бит
+		long t_res, t_a1, t_b1;			// 64 бит
 
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
@@ -123,18 +122,24 @@ public:
 
 	friend const Long_number operator *(Long_number& a1,Long_number &b1)
 	{
-		unsigned int t_l, t_r, t_s;			// 32 бит
-		unsigned __int64 t_res, t_a1, t_b1;	// 64 бит
+		unsigned int t_l, t_r, t_s;		// 32 бит
+		long t_res, t_a1, t_b1;			// 64 бит
 
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
-		if (a1.a_sign != b1.a_sign) {t_s = 1;}
-		else {t_s = 0;}
-		
+		if (a1.a_sign != 0) {t_a1 = -t_a1;}
+		if (b1.a_sign != 0) {t_b1 = -t_b1;}
+
 		t_res=t_a1*t_b1;
-				
-		t_l = t_res / pow(2,32);
+
+		t_s = 0;
+		if (t_res < 0) {
+			t_s = 1;
+			t_res=-t_res;
+		}
+
 		t_r = t_res;
+		t_l = t_res / pow(2,32);
 
 		return (Long_number(t_r, t_l, t_s));
 	}
@@ -142,7 +147,7 @@ public:
 	friend const Long_number operator %(Long_number& a1,Long_number &b1)
 	{
 		unsigned int t_l, t_r, t_s;		// 32 бит
-		__int64 t_res, t_a1, t_b1;			// 64 бит
+		long t_res, t_a1, t_b1;			// 64 бит
 
 		t_a1 = a1.a_right + (a1.a_left ) * pow(2,32);
 		t_b1 = b1.a_right + (b1.a_left ) * pow(2,32);
@@ -181,8 +186,8 @@ public:
 int main()
 {
 	//setlocale(LC_ALL, "Russian");
-	Long_number* _a = new Long_number(2000000000);
-	Long_number* _b = new Long_number(1500000000);
+	Long_number* _a = new Long_number(10000);
+	Long_number* _b = new Long_number(20000);
 	Long_number* _c = new Long_number();
 	*_c = *_a + *_b;
 	_c->putLong_number();
