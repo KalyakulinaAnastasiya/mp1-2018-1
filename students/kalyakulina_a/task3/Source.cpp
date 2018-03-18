@@ -73,6 +73,14 @@ public:
 	int getlastNumberItemsMenu(){
 		return last_sel;
 	}
+
+	int ShowAndSelMenu(){
+		int itm;
+		putMenu();
+		printf("Выбирите пункт меню: ");
+		cin>>itm;
+		return itm;
+	}
 };
 
 void main()
@@ -119,6 +127,11 @@ void main()
 	} else {
 		printf("Последний выбранный пункт меню: %d -  %s\n", a->getlastNumberItemsMenu(), a->getNumberItemsMenu (a->getlastNumberItemsMenu()));
 	}
+
+	cout<<"выбор пункта меню: \n";
+	cout<<"------------------------------------------------ \n";
+	itm = a->ShowAndSelMenu();
+	printf("Выбран пункт %d -  %s\n",itm, a->getNumberItemsMenu (itm)); 
 	int c = 0;
 	cin>>c;
 
