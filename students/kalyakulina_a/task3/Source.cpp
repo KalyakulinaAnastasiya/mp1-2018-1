@@ -14,15 +14,23 @@ public:
 		str = NULL;
 	}
 
-	Menu(char mas[]){
-		count_rows=1;
+	Menu(int menuCount){
+		count_rows=menuCount;
 		last_sel=-1;
-		str=(char**)realloc(str, sizeof(char*));
-		str[0]=(char*)malloc(strlen(mas) + 1);
-		strcpy(str[0], mas); 
+		str = new char* [count_rows];
+
+		for (int i=0; i<count_rows;i++)
+		{
+			str[i] = new char[1];
+		}
+
 	}
 
 	~Menu(){
+		for (int i=0; i<count_rows; i++)
+		{
+			delete[] str[i];
+		}
 		delete[] str;
 	}
 
@@ -51,13 +59,10 @@ public:
 	}
 
 	void setNameItemsMenu(char mn[], int number){
-		if (number == count_rows) {
-			str=(char**)realloc(str, (count_rows+1)*sizeof(char*));
-			count_rows++;
-		} else {
-			free (str[number]);
-		}
-		str[number]=(char*)malloc(strlen(mn) + 1);
+
+		delete[] str[number];
+
+		str[number]= new char[strlen(mn) + 1];
 		strcpy(str[number], mn);
 	}
 
@@ -67,7 +72,12 @@ public:
 	}
 
 	void setCountItemsMenu(int itm) {
+		for (int i=itm; i<count_rows;i++)
+		{
+			delete[] str[i];
+		}
 		count_rows = itm;
+
 	}
 
 	int getlastNumberItemsMenu(){
@@ -90,8 +100,8 @@ void main()
 
 	setlocale(LC_ALL, "Russian");
 
-	Menu *a = new Menu("Первый пункт");
-	a->putMenu();
+	Menu *a = new Menu(6);
+	a->setNameItemsMenu("Первый пункт",0);
 	a->setNameItemsMenu("Второй пункт",1);
 	a->setNameItemsMenu("Третий пункт",2);
 	a->setNameItemsMenu("Четвертый пункт",3);
@@ -132,6 +142,7 @@ void main()
 	cout<<"------------------------------------------------ \n";
 	itm = a->ShowAndSelMenu();
 	printf("Выбран пункт %d -  %s\n",itm, a->getNumberItemsMenu (itm)); 
+
 	int c = 0;
 	cin>>c;
 
