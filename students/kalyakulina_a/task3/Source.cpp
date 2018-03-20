@@ -19,6 +19,7 @@ public:
 	Menu(int menuCount){
 		count_rows=menuCount;
 		last_sel=-1;
+		hide_item = -1;
 		str = new char* [count_rows];
 
 		for (int i=0; i<count_rows;i++)
@@ -28,6 +29,19 @@ public:
 
 	}
 
+	Menu (const Menu & menu){
+		count_rows = menu.count_rows;
+		last_sel=-1;
+		hide_item = -1;
+		str = new char* [count_rows];
+
+		for (int i=0; i<count_rows;i++)
+		{
+			str[i] = new char[strlen(menu.str[i])];
+			strcpy(str[i],menu.str[i]);
+		}
+	}
+
 	~Menu(){
 		for (int i=0; i<count_rows; i++)
 		{
@@ -35,6 +49,27 @@ public:
 		}
 		delete[] str;
 	}
+
+	Menu & operator=(const Menu & menu) {
+		if (this != &menu) {
+			last_sel=-1;
+			hide_item = -1;
+			for (int i=0; i<count_rows;i++)
+			{
+				delete[] str[i];
+			}
+			delete[] str;
+			count_rows = menu.count_rows;
+			str = new char* [count_rows];
+			for (int i = 0; i < count_rows; i++) {
+				str[i] = new char[strlen(menu.str[i])];
+				strcpy(str[i],menu.str[i]);
+			}
+		}
+
+		return *this;
+	}
+
 
 	void putMenu(){
 		for(int i=0; i<count_rows; i++){
@@ -109,7 +144,7 @@ public:
 		{
 			printf("Пункт меню скрыт!\n");
 		}
-		last_sel = itm-1;
+		last_sel = itm;
 		return itm;
 	}
 
@@ -165,7 +200,8 @@ void main()
 	if (a->getlastNumberItemsMenu() < 0) {
 		cout<<"Пункты меню не выбирались \n";
 	} else {
-		printf("Последний выбранный пункт меню: %d -  %s\n", a->getlastNumberItemsMenu(), a->getNumberItemsMenu (a->getlastNumberItemsMenu()));
+		int j = a->getlastNumberItemsMenu();
+		printf("Последний выбранный пункт меню: %d -  %s\n", j, a->getNumberItemsMenu (j));
 	}
 
 	// Скрываем пункт меню
@@ -176,6 +212,16 @@ void main()
 	a->showHidedMenuItem();
 	itm = a->ShowAndSelMenu();
 	printf("Выбран пункт %d -  %s\n",itm, a->getNumberItemsMenu (itm));
+
+	Menu *b = new Menu();
+	printf("Пустое меню b\n");
+	b->putMenu();
+	b = a;
+	printf("Меню b = a\n");
+	b->putMenu();
+	Menu *b1 = new Menu(*b);
+	printf("Меню b1\n");
+	b1->putMenu();
 	int c = 0;
 	cin>>c;
 
