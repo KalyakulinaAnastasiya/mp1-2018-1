@@ -50,7 +50,7 @@ public:
 
 class Temperature{
 private:
-	Watch *masWatch [1000];
+	Watch *masWatch [1000];                                                                          //про второй конструктор!!!!!!
 	int line;				//количество строк(заполненых дат) в наблюдении 
 	CTime startDate;		//Начальная дата и время измерений
 
